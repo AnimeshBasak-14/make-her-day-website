@@ -106,105 +106,6 @@
   }
   #fxCanvas { z-index: 60; }
 
-  /* ================= LIQUID GLASS MUSIC PILL (TOMAR KOTHA) ================= */
-  .music-pill {
-    position: fixed;
-    top: 22px;
-    right: 22px;
-    z-index: 120;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    color: #fff;
-    font-size: 12.5px;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(-12px);
-    pointer-events: none;
-    transition: all 0.6s var(--ease-spring);
-  }
-  .music-pill.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .ambient-bg.light-mode ~ .music-pill {
-    background: rgba(255, 255, 255, 0.65);
-    border-color: rgba(200, 60, 100, 0.2);
-    color: #4a1c2d;
-    box-shadow: 0 10px 28px rgba(180, 60, 95, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  .music-btn {
-    background: rgba(255, 77, 121, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: inherit;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
-    transition: transform 0.25s var(--ease-spring), background 0.25s;
-  }
-  .music-btn:hover {
-    transform: scale(1.1);
-    background: rgba(255, 77, 121, 0.45);
-  }
-  .song-select {
-    background: transparent;
-    border: none;
-    color: inherit;
-    font-family: inherit;
-    font-size: 12.5px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
-    padding-right: 4px;
-  }
-  .song-select option {
-    background: #1f0c1d;
-    color: #fff;
-  }
-  .eq-bars {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 12px;
-  }
-  .eq-bar {
-    width: 2.5px;
-    background: var(--champagne);
-    border-radius: 2px;
-    height: 3px;
-    transition: height 0.2s ease;
-  }
-  .music-pill.playing .eq-bar:nth-child(1) { animation: eqAnim 0.7s infinite alternate; }
-  .music-pill.playing .eq-bar:nth-child(2) { animation: eqAnim 0.5s 0.15s infinite alternate; }
-  .music-pill.playing .eq-bar:nth-child(3) { animation: eqAnim 0.65s 0.3s infinite alternate; }
-  @keyframes eqAnim {
-    0% { height: 3px; }
-    100% { height: 12px; }
-  }
-  .upload-mp3-label {
-    cursor: pointer;
-    opacity: 0.75;
-    font-size: 11px;
-    padding: 3px 7px;
-    border-radius: 999px;
-    border: 1px dashed currentColor;
-    transition: opacity 0.2s;
-  }
-  .upload-mp3-label:hover { opacity: 1; }
-
   /* Hidden YouTube Audio Container */
   #ytPlayerWrap {
     position: fixed;
@@ -394,15 +295,7 @@
     margin-bottom: 30px;
     line-height: 1.5;
   }
-  .unwrap-song-hint {
-    font-size: 12px;
-    color: rgba(247, 201, 126, 0.85);
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
+  
 
   /* ================= SCENE 3: BOW & ARROW HEART ================= */
   #scene3 {
@@ -1130,23 +1023,9 @@
     animation: heartBeatSmooth 1.8s infinite;
     filter: drop-shadow(0 10px 24px rgba(247, 201, 126, 0.35));
   }
-  .now-playing-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12.5px;
-    white-space: nowrap;
-    padding: 0 4px;
-  }
-  .song-title-label {
-    font-weight: 700;
-    color: #fff;
-  }
-  .song-artist-label {
-    font-weight: 400;
-    color: var(--champagne);
-    opacity: 0.95;
-  }
+  
+  
+  
 
 </style>
 </head>
@@ -1162,32 +1041,17 @@
 <canvas id="starCanvas"></canvas>
 <canvas id="fxCanvas"></canvas>
 
-<!-- FLOATING LIQUID GLASS MUSIC PILL — TOMAR KOTHA -->
-<div class="music-pill" id="musicPill">
-  <button class="music-btn" id="playPauseBtn" onclick="togglePlayback()" title="Play / Pause">⏸</button>
-  <div class="eq-bars">
-    <span class="eq-bar"></span>
-    <span class="eq-bar"></span>
-    <span class="eq-bar"></span>
-  </div>
-  <div class="now-playing-info">
-    <span class="song-title-label">Tomar Kotha</span>
-    <span class="song-artist-label">— Papon &amp; Keshab Nayan ‧ 2020</span>
-  </div>
-  <label class="upload-mp3-label" title="Or select a local audio file from your device">
-    🎵 Audio
-    <input type="file" accept="audio/*" style="display:none" onchange="loadLocalMp3(event)" />
-  </label>
-</div>
-
-<!-- Local Audio Player with multiple format fallbacks (m4a / mp3) -->
+<!-- Background Audio Element (Hidden, Plays Trimmed Tomar Kotha) -->
 <audio id="localAudioPlayer" loop preload="auto">
   <source src="assets/tomar_kotha.mp3" type="audio/mpeg">
   <source src="assets/tomar_kotha.m4a" type="audio/mp4">
   <source src="tomar_kotha.mp3" type="audio/mpeg">
   <source src="tomar_kotha.m4a" type="audio/mp4">
 </audio>
-<div id="ytPlayerWrap"><div id="ytPlayer"></div></div>
+<div id="ytPlayerWrap" style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;"><div id="ytPlayer"></div></div>
+
+
+
 
 <!-- FUNNY "HOW DARE YOU!" MODAL (Valentine-App Theme) -->
 <div class="funny-angry-modal" id="funnyAngryModal">
@@ -1239,7 +1103,6 @@
         <span>No 🙄</span>
       </button>
     </div>
-    <div class="unwrap-song-hint">🎶 Now Playing: Tomar Kotha — Keshab Nayan &amp; Papon ‧ 2020</div>
   </div>
 </section>
 
@@ -1396,16 +1259,23 @@ You asked me why I love you... I seem to have cherished you in countless ways, i
 Our stardust, our souls, our fingers touch. When certain atoms collide, it is instantaneous and it is inevitable — it is basic chemistry. In one existence after another, in era upon era, for all eternity.`;
 
 /* ============================================================================
-   2. TOMAR KOTHA SONG PLAYER (PAPON & KESHAB NAYAN ‧ 2020) + LOCAL AUDIO FALLBACK
+   2. TOMAR KOTHA MAIN SONG (TRIMMED TO MAIN LYRICS, NO FLOATING WIDGET)
    ============================================================================ */
 let ytPlayer = null;
 let ytReady = false;
 let isPlayingSong = false;
 let usingLocalAudio = false;
-const localAudio = document.getElementById('localAudioPlayer');
-const TOMAR_KOTHA_YT_ID = 'fE8V0Ounw4U'; // "Tomar Kotha" by Keshab Nayan & Papon (2020)
+let localAudio = document.getElementById('localAudioPlayer');
+if (!localAudio) {
+  localAudio = document.createElement('audio');
+  localAudio.id = 'localAudioPlayer';
+  localAudio.loop = true;
+  localAudio.src = 'assets/tomar_kotha.mp3';
+  document.body.appendChild(localAudio);
+}
+const TOMAR_KOTHA_YT_ID = 'eBFYuMmUjLg'; // Clean studio track of Tomar Kotha (2020)
 
-// Load YouTube IFrame API for Tomar Kotha streaming fallback
+// Load YouTube IFrame API for streaming fallback if needed
 (function loadYouTubeAPI() {
   const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
@@ -1422,69 +1292,58 @@ window.onYouTubeIframeAPIReady = function() {
       autoplay: 0,
       controls: 0,
       loop: 1,
+      start: 26,
       playlist: TOMAR_KOTHA_YT_ID
     },
     events: {
       onReady: function() { ytReady = true; },
       onError: function() {
-        console.warn('YouTube playback error, using local audio fallback');
+        console.warn('YouTube playback error, local audio is primary');
       }
     }
   });
 };
 
 function startSong() {
-  const pill = document.getElementById('musicPill');
-  const btn = document.getElementById('playPauseBtn');
-  pill.classList.add('visible');
+  if (isPlayingSong) return;
+  if (!localAudio) {
+    localAudio = document.getElementById('localAudioPlayer');
+  }
+  if (!localAudio) {
+    localAudio = document.createElement('audio');
+    localAudio.id = 'localAudioPlayer';
+    localAudio.loop = true;
+    localAudio.src = 'assets/tomar_kotha.mp3';
+    document.body.appendChild(localAudio);
+  }
+  try {
+    localAudio.currentTime = 0;
+    localAudio.volume = 0.88;
+  } catch (e) {}
 
-  // First try playing local downloaded audio (instant, smooth, works offline)
   localAudio.play().then(() => {
     usingLocalAudio = true;
     isPlayingSong = true;
-    pill.classList.add('playing');
-    btn.textContent = '⏸';
   }).catch(() => {
     usingLocalAudio = false;
     if (ytReady && ytPlayer && ytPlayer.playVideo) {
-      ytPlayer.setVolume(90);
+      ytPlayer.setVolume(88);
       ytPlayer.playVideo();
       isPlayingSong = true;
-      pill.classList.add('playing');
-      btn.textContent = '⏸';
     }
   });
 }
 
 function togglePlayback() {
-  const pill = document.getElementById('musicPill');
-  const btn = document.getElementById('playPauseBtn');
   if (isPlayingSong) {
     if (usingLocalAudio) localAudio.pause();
     else if (ytReady && ytPlayer) ytPlayer.pauseVideo();
     isPlayingSong = false;
-    pill.classList.remove('playing');
-    btn.textContent = '▶';
   } else {
     if (usingLocalAudio) localAudio.play();
     else if (ytReady && ytPlayer) ytPlayer.playVideo();
     isPlayingSong = true;
-    pill.classList.add('playing');
-    btn.textContent = '⏸';
   }
-}
-
-function loadLocalMp3(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (ytReady && ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
-  const url = URL.createObjectURL(file);
-  localAudio.src = url;
-  localAudio.play();
-  usingLocalAudio = true;
-  isPlayingSong = true;
-  document.getElementById('musicPill').classList.add('playing');
-  document.getElementById('playPauseBtn').textContent = '⏸';
 }
 
 /* ================= FUNNY THEME INTERACTIONS (VALENTINE-APP) ================= */
